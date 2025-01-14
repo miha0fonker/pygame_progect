@@ -165,7 +165,7 @@ while run:
         finish = 3
 
 
-    # Рисование (соблюдайте отступ!)
+    # Рисование
     if finish == 1:
         screen.fill(BLACK)
         pygame.draw.line(screen, WHITE, (0, 100), (1200, 100), 10)
