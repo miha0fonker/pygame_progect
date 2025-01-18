@@ -1,5 +1,91 @@
 import pygame
 import random
+import sqlite3
+
+global run
+
+db_name = 'carandgold.db'
+connection = sqlite3.connect(db_name)
+cursor = connection.cursor()
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS carandgold(
+nickname,
+score
+)
+''')
+
+
+def creatle_log_in():
+    cursor = connection.cursor()
+    name = input()
+    try:
+        prohel_proverky_login = cursor.execute("""SELECT nickname FROM carandgold WHERE (nickname = ?)""", (name,)).fetchall()[0]
+        if len(prohel_proverky_login) == 1:
+            print("Такой никнейм существует!")
+            return creatle_log_in()
+    except IndexError:
+        cursor.execute("""INSERT INTO carandgold (nickname, score) VALUES(? , 0 )""", (name,))
+        connection.commit()
+    main()
+
+
+
+def log_in():
+    cursor = connection.cursor()
+    global run
+    global name2
+    global name1
+    global goldper
+    global goldvtor
+    flag1 = False
+    flag2 = False
+    name1 = input()
+    name2 = input()
+    flag_login = True
+    try:
+        prohel_proverky_login1 = \
+        cursor.execute("""SELECT nickname FROM carandgold WHERE (nickname = ?)""", (name1,)).fetchall()[0]
+        flag1 = True
+    except IndexError:
+        print("Неверный никнейм первого аккаунта!")
+        return log_in()
+    try:
+        prohel_proverky_login2 = \
+        cursor.execute("""SELECT nickname FROM carandgold WHERE (nickname = ?)""", (name2,)).fetchall()[0]
+        flag2 = True
+    except IndexError:
+        print("Неверный никнейм второго аккаунта!")
+        return log_in()
+    if flag1 == flag2:
+        if flag_login:
+            a = cursor.execute("""SELECT score FROM carandgold WHERE (nickname = ?)""", (name1,)).fetchall()
+            b = cursor.execute("""SELECT score FROM carandgold WHERE (nickname = ?)""", (name2,)).fetchall()
+            for i in a:
+                goldper = (i)
+            goldper = str(goldper)[1]
+            for j in b:
+                goldvtor = (j)
+            goldvtor = str(goldvtor)[1]
+            print(goldvtor, goldper)
+            run = True
+            connection.commit()
+        else:
+            return log_in()
+        connection.commit()
+
+def main():
+    l = []
+    print("Ввести никнейм или выбрать существующий")
+    menu = cursor.execute('''SELECT * FROM carandgold'''). fetchall()
+    for k in menu:
+        print(k)
+    vibor = input()
+    if vibor == "1":
+        creatle_log_in()
+    else:
+        log_in()
+
+main()
 
 pygame.init()
 
@@ -38,12 +124,11 @@ speed = 1
 y_car3 = 320
 red_car = pygame.image.load("red_car.png")
 
-run = True
+
 while run:
     for ev in pygame.event.get():
         if ev.type == pygame.QUIT:
             run = False
-
     # Логика (соблюдайте отступ!)
     game_time = pygame.time.get_ticks()
     x_gold = x_gold - step
@@ -164,7 +249,6 @@ while run:
     if gold == 25:
         finish = 3
 
-
     # Рисование
     if finish == 1:
         screen.fill(BLACK)
@@ -180,12 +264,18 @@ while run:
         screen.blit(car, (x_car2, y_car2))
 
         text_gold = str(gold)
-        t_gold = "Gold 1: " + text_gold
+        t_gold = f"{name1}:" + text_gold
+        if int(gold) > int(goldper):
+            cursor.execute('''UPDATE carandgold SET score = ? WHERE nickname = ?''', (gold, name1))
+            connection.commit()
         text = my_font.render(t_gold, True, WHITE)
         screen.blit(text, (10, 10))
 
         text_gold = str(gold2)
-        t_gold = "Gold 2: " + text_gold
+        t_gold = f"{name2}:" + text_gold
+        if int(gold2) > int(goldvtor):
+            cursor.execute('''UPDATE carandgold SET score = ? WHERE nickname = ?''', (gold2, name2))
+            connection.commit()
         text = my_font.render(t_gold, True, WHITE)
         screen.blit(text, (10, 50))
 
@@ -207,6 +297,7 @@ while run:
             my_font = pygame.font.Font(None, 120)
             text = my_font.render("ты победил!!", True, WHITE)
             screen.blit(text, (350, 200))
+
 
     pygame.time.delay(17)
     pygame.display.update()
