@@ -1,0 +1,52 @@
+from PyQt6 import QtCore, QtWidgets
+
+
+class Ui_Dialog(object):
+    def setupUi(self, Dialog):
+        Dialog.setObjectName("Car & Gold")
+        Dialog.resize(580, 540)
+        self.label = QtWidgets.QLabel(parent=Dialog)
+        self.label.setGeometry(QtCore.QRect(190, 30, 371, 51))
+        self.label.setObjectName("label")
+        self.lineEdit = QtWidgets.QLineEdit(parent=Dialog)
+        self.lineEdit.setGeometry(QtCore.QRect(180, 110, 113, 28))
+        self.lineEdit.setObjectName("lineEdit")
+        self.enter1 = QtWidgets.QPushButton(parent=Dialog)
+        self.enter1.setGeometry(QtCore.QRect(178, 180, 117, 28))
+        self.enter1.setObjectName("pushButton")
+        self.btn = QtWidgets.QPushButton(parent=Dialog)
+        self.btn.setGeometry(QtCore.QRect(340, 180, 93, 28))
+        self.btn.setObjectName("btn")
+        self.pushButton_2 = QtWidgets.QPushButton(parent=Dialog)
+        self.pushButton_2.setGeometry(QtCore.QRect(340, 110, 93, 28))
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.lineEdit_2 = QtWidgets.QLineEdit(parent=Dialog)
+        self.lineEdit_2.setGeometry(QtCore.QRect(180, 150, 113, 28))
+        self.lineEdit_2.setObjectName("lineEdit_2")
+        self.pushButton_4 = QtWidgets.QPushButton(parent=Dialog)
+        self.pushButton_4.setGeometry(QtCore.QRect(340, 150, 93, 28))
+        self.pushButton_4.setObjectName("pushButton_4")
+        self.label_2 = QtWidgets.QLabel(parent=Dialog)
+        self.label_2.setGeometry(QtCore.QRect(10, 110, 171, 20))
+        self.label_2.setObjectName("label_2")
+        self.label_3 = QtWidgets.QLabel(parent=Dialog)
+        self.label_3.setGeometry(QtCore.QRect(10, 130, 161, 61))
+        self.label_3.setObjectName("label_3")
+        self.label_4 = QtWidgets.QLabel(parent=Dialog)
+        self.label_4.setGeometry(QtCore.QRect(290, 210, 300, 16))
+        self.label_4.setObjectName("label_4")
+
+        self.retranslateUi(Dialog)
+        QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+    def retranslateUi(self, Dialog):
+        _translate = QtCore.QCoreApplication.translate
+        Dialog.setWindowTitle(_translate("Dialog", "Car & Gold"))
+        self.label.setText(_translate("Dialog", "Добро пожаловать в Car & Gold!"))
+        self.enter1.setText(_translate("Dialog", "Играть"))
+        self.pushButton_2.setText(_translate("Dialog", "Добавить"))
+        self.pushButton_4.setText(_translate("Dialog", "Добавить"))
+        self.label_2.setText(_translate("Dialog", "Введите никнейм игрока 1:"))
+        self.label_3.setText(_translate("Dialog", "Введите никнейм игрока 2:"))
+        self.label_4.setText(_translate("Dialog", ""))
+        self.btn.setText(_translate("Dialog", "Статистика"))
